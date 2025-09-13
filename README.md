@@ -1,4 +1,4 @@
-# Trabajo Práctico Número 4
+# Trabajos Prácticos (Testing de software de sistemas embebidos)
 
 ## Uso del repositorio
 
