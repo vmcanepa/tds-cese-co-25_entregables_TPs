@@ -25,8 +25,8 @@ static bool IsLedValid(int led)
 
 void LedsInitDriver(uint16_t * puerto_virtual)
 {
-    puerto  = puerto_virtual;
-    *puerto = ALL_LED_OFF; /* apagar todos los LEDs al iniciar.*/
+    puerto = puerto_virtual;
+    LedsAllTurnOff(); /* apagar todos los LEDs al iniciar.*/
 }
 
 void LedsTurnOn(int led)
@@ -45,4 +45,14 @@ void LedsTurnOff(int led)
         return;
     }
     *puerto &= ~LedToMask(led);
+}
+
+void LedsAllTurnOn(void)
+{
+    *puerto = ~ALL_LED_OFF;
+}
+
+void LedsAllTurnOff(void)
+{
+    *puerto = ALL_LED_OFF;
 }

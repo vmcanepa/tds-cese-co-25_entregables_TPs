@@ -1,11 +1,5 @@
 /* Tests:
- * - Iniciar el driver y revisar que todos los leds estén apagados.
- * - Prender un led y verificar que no cambia el resto.
- * - Prender un led y cualquiera apagarlo.
- * - Prender más de un led, apagar uno y verificar que el resto siguen sin
- * cambio.
- * > Prender un led y apagarlo en ambos extremos.
- * - Prender todos los leds.
+ * - Prender un led y apagarlo en ambos extremos.
  * - Prender y apagar todos los leds.
  * - Prender algunos leds más de una vez y verificar que sigue prendido.
  * - Apagar algunos leds más de una vez y verificar que siguen apagados.
@@ -15,8 +9,6 @@
  * quedan apagados.
  * - Consultar el estado de un led encendido y comprobar que es correcto.
  * - Consultar el estado de un led apagado y comprobar que es correcto.
- * - Tratar de manipular un led fuera de rango y comprobar que se genera un
- * error.
  */
 
 #include "leds.h"
@@ -99,11 +91,32 @@ void test_tratar_prender_led_fuera_rango_y_comprobar_que_se_genera_error(void)
  */
 void test_tratar_apagar_led_fuera_rango_y_comprobar_que_se_genera_error(void)
 {
+    // RegistrarMensaje_Expect(ALERTA, "LedsTurnOn", 0, "El led no es valido");
+    // RegistrarMensaje_IgnoreArg_linea();
     RegistrarMensaje_ExpectAnyArgs();
     LedsTurnOff(0);
     TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
 
     RegistrarMensaje_ExpectAnyArgs();
     LedsTurnOff(17);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+/**
+ * @brief Prender todos los leds.
+ */
+void test_prender_todos_los_leds(void)
+{
+    LedsAllTurnOn();
+    TEST_ASSERT_EQUAL_HEX16(0xFFFF, puerto_virtual);
+}
+
+/**
+ * @brief Apagar todos los leds.
+ */
+void test_apagar_todos_los_leds(void)
+{
+    LedsAllTurnOn();
+    LedsAllTurnOff();
     TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
 }
