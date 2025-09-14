@@ -4,7 +4,7 @@
  * - Prender un led y cualquiera apagarlo.
  * - Prender más de un led, apagar uno y verificar que el resto siguen sin
  * cambio.
- * - Prender un led y apagarlo en ambos extremos.
+ * > Prender un led y apagarlo en ambos extremos.
  * - Prender todos los leds.
  * - Prender y apagar todos los leds.
  * - Prender algunos leds más de una vez y verificar que sigue prendido.
@@ -21,6 +21,7 @@
 
 #include "leds.h"
 #include "unity.h"
+#include "mock_errores.h"
 
 static uint16_t puerto_virtual;
 
@@ -73,4 +74,36 @@ void test_prender_mas_de_un_led_apagar_uno_y_verificar_que_el_resto_sigue(void)
     LedsTurnOn(5);
     LedsTurnOff(3);
     TEST_ASSERT_EQUAL_HEX16(1 << 4, puerto_virtual);
+}
+
+/**
+ * @brief Tratar de prender un led fuera de rango y comprobar que se genera un
+ * error.
+ */
+void test_tratar_prender_led_fuera_rango_y_comprobar_que_se_genera_error(void)
+{
+    // RegistrarMensaje_Expect(ALERTA, "LedsTurnOn", 0, "El led no es valido");
+    // RegistrarMensaje_IgnoreArg_linea();
+    RegistrarMensaje_ExpectAnyArgs();
+    LedsTurnOn(0);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+
+    RegistrarMensaje_ExpectAnyArgs();
+    LedsTurnOn(17);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+/**
+ * @brief Tratar de apagar un led fuera de rango y comprobar que se genera un
+ * error.
+ */
+void test_tratar_apagar_led_fuera_rango_y_comprobar_que_se_genera_error(void)
+{
+    RegistrarMensaje_ExpectAnyArgs();
+    LedsTurnOff(0);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+
+    RegistrarMensaje_ExpectAnyArgs();
+    LedsTurnOff(17);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
 }
