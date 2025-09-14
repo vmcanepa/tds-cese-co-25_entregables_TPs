@@ -1,4 +1,8 @@
 {
     "editor.defaultFormatter": "xaver.clang-format",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.associations": {
+        "leds.h": "c",
+        "stdint.h": "c"
+    }
 }
