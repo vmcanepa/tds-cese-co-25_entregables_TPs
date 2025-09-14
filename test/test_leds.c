@@ -1,7 +1,7 @@
 /* Tests:
  * - Iniciar el driver y revisar que todos los leds estén apagados.
  * - Prender un led y verificar que no cambia el resto.
- * - Prender un led y apagarlo cualquiera.
+ * - Prender un led y cualquiera apagarlo.
  * - Prender más de un led, apagar uno y verificar que el resto siguen sin
  * cambio.
  * - Prender un led y apagarlo en ambos extremos.
@@ -22,8 +22,11 @@
 #include "leds.h"
 #include "unity.h"
 
+static uint16_t puerto_virtual;
+
 void setUp(void)
 {
+    LedsInitDriver(&puerto_virtual);
 }
 
 void tearDown(void)
@@ -46,9 +49,16 @@ void test_al_iniciar_todos_los_leds_estan_apagados(void)
  */
 void test_prender_un_led_y_verificar_que_no_cambie_el_resto(void)
 {
-    uint16_t puerto_virtual;
-
-    LedsInitDriver(&puerto_virtual);
     LedsTurnOn(3);
     TEST_ASSERT_EQUAL_HEX16(1 << 2, puerto_virtual);
+}
+
+/**
+ * @brief Prender un led cualquiera y apagarlo.
+ */
+void test_prender_un_led_cualquiera_y_apagarlo(void)
+{
+    LedsTurnOn(5);
+    LedsTurnOff(5);
+    TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
 }

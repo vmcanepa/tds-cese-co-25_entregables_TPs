@@ -12,3 +12,8 @@ void LedsTurnOn(int led)
 {
     *puerto = 1 << 2;
 }
+
+void LedsTurnOff(int led)
+{
+    *puerto = 0x0000;
+}
