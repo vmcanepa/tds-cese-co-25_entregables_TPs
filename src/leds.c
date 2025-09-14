@@ -1,6 +1,14 @@
 #include "leds.h"
 
+static uint16_t * puerto;
+
 void LedsInitDriver(uint16_t * puerto_virtual)
 {
-    *puerto_virtual = 0x0000; /* apagar todos los LEDs al iniciar.*/
+    puerto  = puerto_virtual;
+    *puerto = 0x0000; /* apagar todos los LEDs al iniciar.*/
+}
+
+void LedsTurnOn(int led)
+{
+    *puerto = 1 << 2;
 }
