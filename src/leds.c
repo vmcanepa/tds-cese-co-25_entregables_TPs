@@ -56,3 +56,20 @@ void LedsAllTurnOff(void)
 {
     *puerto = ALL_LED_OFF;
 }
+
+int LedsIsOn(int led)
+{
+    if(!IsLedValid(led))
+    {
+        return -1;
+    }
+    return (0 != (*puerto & LedToMask(led)));
+}
+
+int LedsIsOff(int led)
+{
+    int state;
+
+    state = LedsIsOn(led);
+    return state < 0 ? -1 : !state;
+}

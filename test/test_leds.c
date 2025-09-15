@@ -1,16 +1,3 @@
-/* Tests:
- * - Prender un led y apagarlo en ambos extremos.
- * - Prender y apagar todos los leds.
- * - Prender algunos leds más de una vez y verificar que sigue prendido.
- * - Apagar algunos leds más de una vez y verificar que siguen apagados.
- * - Prender algunos leds, despues prender todos y comprobar que todos los leds
- * quedan prendidos.
- * - Prender todos, apagar algunos, apagar todos y comprobar que todos los leds
- * quedan apagados.
- * - Consultar el estado de un led encendido y comprobar que es correcto.
- * - Consultar el estado de un led apagado y comprobar que es correcto.
- */
-
 #include "leds.h"
 #include "unity.h"
 #include "mock_errores.h"
@@ -119,4 +106,47 @@ void test_apagar_todos_los_leds(void)
     LedsAllTurnOn();
     LedsAllTurnOff();
     TEST_ASSERT_EQUAL_HEX16(0x0000, puerto_virtual);
+}
+
+/**
+ * @brief Consultar el estado de un led encendido y comprobar que es correcto.
+ */
+void test_consultar_estado_de_un_led_encendido_y_comprobar_que_es_correcto(void)
+{
+    LedsTurnOn(1);
+    TEST_ASSERT_EQUAL(1, LedsIsOn(1));
+}
+
+/**
+ * @brief Consultar el estado de un led apagado y comprobar que es correcto.
+ */
+void test_consultar_estado_de_un_led_apagado_y_comprobar_que_es_correcto(void)
+{
+    LedsAllTurnOn();
+    LedsTurnOff(1);
+    TEST_ASSERT_EQUAL(1, LedsIsOff(1));
+}
+
+/**
+ * @brief Verificar los límites al consultar el estado de un led encendido.
+ */
+void test_verificar_limites_al_consultar_estado_de_led_encendido(void)
+{
+    RegistrarMensaje_ExpectAnyArgs();
+    TEST_ASSERT_EQUAL(-1, LedsIsOn(0));
+
+    RegistrarMensaje_ExpectAnyArgs();
+    TEST_ASSERT_EQUAL(-1, LedsIsOn(17));
+}
+
+/**
+ * @brief Verificar los límites al consultar el estado de un led apagado.
+ */
+void test_verificar_limites_al_consultar_estado_de_led_apagado(void)
+{
+    RegistrarMensaje_ExpectAnyArgs();
+    TEST_ASSERT_EQUAL(-1, LedsIsOff(0));
+
+    RegistrarMensaje_ExpectAnyArgs();
+    TEST_ASSERT_EQUAL(-1, LedsIsOff(17));
 }
